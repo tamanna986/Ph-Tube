@@ -31,27 +31,29 @@ const handleCategoryDetail = async (categoryId) =>{
 
     // obtaining the div to append details inside it
     const categoryDetailContainer = document.getElementById('category-detail-container');
-    categoryDetailContainer.classList = `grid grid-cols-4 gap-4`;
+    categoryDetailContainer.classList = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4`;
     categoryDetailContainer.textContent = '';
     
 
     categoryDetail.forEach((cardInfo) =>{
         const div = document.createElement('div');
         div.innerHTML = ` 
-        <div class="card  bg-base-100 shadow-xl my-20">
-            <figure><img class="w-46 h-56" src=${cardInfo?.thumbnail} /></figure>
+        <div class="card  bg-base-100 shadow-xl my-10 mx-3 md:mx-6 lg:mx-0">
+            <figure><img class="w-46 h-56" src=${cardInfo?.thumbnail} ></figure>
             <div class="card-body">
-                <div class=" flex">
-                    <img class="rounded-full W-6 justify-around" src="Icon.png" alt="">
+                <div class=" flex gap-2 ">
+                    <div class = "w-10 ">
+                    <img class="rounded-full W-8 h-10 justify-around" src= '${cardInfo?.authors[0]?.profile_picture}' alt="">
+                    </div>
 
                     <div>
-                        <h2 class="card-title text-lg">Shoes!</h2>
-                        <div class="flex gap-3">
-                            <p class="text-gray-400">If a dog chews shoes whose shoes does he choose?</p>
-                            <p>ratings</p>
+                        <h2 class="card-title text-lg">${cardInfo?.title}</h2>
+                        <div class="flex ">
+                            <p class="text-gray-400">${cardInfo?.authors[0]?.profile_name}</p>
+                            <p>${cardInfo.authors[0].verified? 'tutu': ''}</p>
                         </div>
-                        <p class="text-gray-400">aname</p>
-                        <p class="text-gray-400">view</p>
+                        <p class="text-gray-400">${cardInfo?.others?.views +' '+ 'views'}</p>
+                        
                     </div>
                 </div>
             </div>
@@ -59,9 +61,11 @@ const handleCategoryDetail = async (categoryId) =>{
     `
     categoryDetailContainer.appendChild(div)
         console.log(cardInfo);
+        console.log(cardInfo?.authors[0]?.profile_name);
     })
     // console.log(categoryDetail);
 }
 
 
 categoryTab();
+handleCategoryDetail(1000);
