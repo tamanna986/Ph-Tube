@@ -30,6 +30,10 @@ const handleCategoryDetail = async (categoryId) => {
     const categoryDetail = data.data;
     displaydata(categoryDetail)
 
+    // // // function for time
+    // const timeInMs = cardInfo.others.posted_date;
+    // handleTime(timeInMs)
+
     // obtaining the div to append details inside it
     const categoryDetailContainer = document.getElementById('category-detail-container');
     categoryDetailContainer.classList = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4`;
@@ -37,10 +41,30 @@ const handleCategoryDetail = async (categoryId) => {
 
 
     categoryDetail.forEach((cardInfo) => {
+
+        // obtaing published date to convert in hours and miniutes
+        const timeIns = cardInfo.others.posted_date;
+        console.log(timeIns)      
+    //     let minutes = Math.floor(timeMs / 60);
+    //     let hours = Math.floor(minutes / 60);
+      
+    //  // adding a leading zero if the values for the hours or minutes contain a single digit
+      
+    //   const hour = hours.toString().padStart(2, '0');
+    //   const miniute = minutes.toString().padStart(2, '0'); 
+    const hours = Math.floor(timeIns / 3600);
+   const remainingSeconds = timeIns % 3600;
+   const minutes = Math.floor(remainingSeconds / 60)
+      console.log(hours,minutes)
+
+
+     
+        
+       
         const div = document.createElement('div');
         div.innerHTML = ` 
-        <div class="card  bg-base-100 shadow-xl my-10 mx-3 md:mx-6 lg:mx-0">
-            <figure><img class="w-46 h-56" src=${cardInfo?.thumbnail} ></figure>
+        <div class="card  bg-base-100 shadow-xl my-10 mx-3 md:mx-6 lg:mx-0 ">
+            <figure><img class="w-46 h-56 relative" src=${cardInfo?.thumbnail} ></figure>
             <div class="card-body">
                 <div class=" flex gap-2 ">
                     <div class = "w-10 ">
@@ -51,13 +75,14 @@ const handleCategoryDetail = async (categoryId) => {
                 <div>
                 <h2 class="card-title text-lg">${cardInfo?.title}</h2>
                 </div>
-                        <div class="flex  items-center justify-center w-32 ">
+                        <div class="flex  items-center justify-center w-32  ">
                             <p class="text-gray-400">${cardInfo?.authors[0]?.profile_name.slice(0, 10)}</p>
                            
                             <p  >${cardInfo.authors[0].verified ? `<img  src="verify.png">` : ''}</p>
                            
                         </div>
                         <p class="text-gray-400">${cardInfo?.others?.views + ' ' + 'views'}</p>
+                        <p class = "text-white bg-black  rounded-md absolute top-44 right-4 ">${ hours!=0?hours+'hrs ' + minutes + ' min ago':''}</p>
                         
                     </div>
                 </div>
@@ -68,6 +93,7 @@ const handleCategoryDetail = async (categoryId) => {
         categoryDetailContainer.appendChild(div)
 
         console.log(cardInfo);
+            
 
 
 
@@ -89,8 +115,23 @@ const handleCategoryDetail = async (categoryId) => {
 
 
 }
+// to go to blog page
+function blogFunction() {
+    window.location.href = "blog.html";
+    }
 
-
+    // function to get ms in hours and minitues
+    function handleTime(ms) {
+        // Convert milliseconds to seconds
+        const seconds = Math.floor(ms / 1000);
+        
+        // Calculate the number of hours and minutes
+        const hours = Math.floor(seconds / 3600);
+        const minutes = Math.floor((seconds % 3600) / 60);
+        
+        return(hours + 'hour', minutes + 'min')
+      }
+      
 
 categoryTab();
 handleCategoryDetail(1000);
