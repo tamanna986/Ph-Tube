@@ -1,8 +1,9 @@
+let revisedData;
 const categoryTab = async () => {
     const res = await fetch('https://openapi.programming-hero.com/api/videos/categories');
     const data = await res.json();
     const category = data.data;
-    // console.log(data.data);
+
     categoryName(category);
 }
 
@@ -13,7 +14,6 @@ const categoryName = (category) => {
     // accessing category names ND SHOWING THEM
     category.forEach((categoryName) => {
 
-        console.log(categoryName.category);
         const div = document.createElement('div');
         div.innerHTML = `<a onclick = "handleCategoryDetail('${categoryName.category_id}')" class="tab tabs-boxed mx-1 md:mx-4 px-1 md:px-6 ">${categoryName.category}</a> `
         categoryContainer.appendChild(div);
@@ -27,27 +27,30 @@ const handleCategoryDetail = async (categoryId) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/videos/category/${categoryId}`);
     const data = await res.json();
     const categoryDetail = data.data;
+    revisedData = categoryDetail
 
     displaydata(categoryDetail)
+    displayDataDetail(categoryDetail)
 
 
+}
+
+function displayDataDetail(categoryDetail) {
     // obtaining the div to append details inside it
     const categoryDetailContainer = document.getElementById('category-detail-container');
     categoryDetailContainer.classList = `grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4`;
     categoryDetailContainer.textContent = '';
 
-
     categoryDetail.forEach((cardInfo) => {
+
+
 
         // obtaining published date to convert in hours and minutes
         const timeIns = cardInfo.others.posted_date;
-        console.log(timeIns)
 
         const hours = Math.floor(timeIns / 3600);
         const remainingSeconds = timeIns % 3600;
         const minutes = Math.floor(remainingSeconds / 60)
-        console.log(hours, minutes)
-
 
         const div = document.createElement('div');
         div.innerHTML = ` 
@@ -80,26 +83,33 @@ const handleCategoryDetail = async (categoryId) => {
     `
         categoryDetailContainer.appendChild(div)
 
-        console.log(cardInfo);
-
     })
-
-    // to display no content id there is no data
-    function displaydata(item) {
-        const emptyContent = document.getElementById('no-content');
-        if (item.length == 0) {
-            emptyContent.classList.remove('hidden');
-
-        }
-        else if (item.length > 0) {
-            emptyContent.classList.add('hidden');
-        }
+}
 
 
+// to display no content id there is no data
+function displaydata(item) {
+    const emptyContent = document.getElementById('no-content');
+    if (item.length == 0) {
+        emptyContent.classList.remove('hidden');
+
+    }
+    else if (item.length > 0) {
+        emptyContent.classList.add('hidden');
     }
 
 
 }
+
+
+function handleSorting() {
+    revisedData.sort((a, b) => {
+        return parseInt(b.others.views) - parseInt(a.others.views);
+    });
+    displayDataDetail(revisedData)
+}
+
+
 // to go to blog page
 function blogFunction() {
     window.location.href = "blog.html";
