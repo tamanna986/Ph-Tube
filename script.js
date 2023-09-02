@@ -6,8 +6,7 @@ const categoryTab = async () => {
     categoryName(category);
 }
 
-
-
+// fetching data inside array of object
 const categoryName = (category) => {
     const categoryContainer = document.getElementById('category-container');
     categoryContainer.classList = `tabs justify-center`;
@@ -28,11 +27,9 @@ const handleCategoryDetail = async (categoryId) => {
     const res = await fetch(`https://openapi.programming-hero.com/api/videos/category/${categoryId}`);
     const data = await res.json();
     const categoryDetail = data.data;
+
     displaydata(categoryDetail)
 
-    // // // function for time
-    // const timeInMs = cardInfo.others.posted_date;
-    // handleTime(timeInMs)
 
     // obtaining the div to append details inside it
     const categoryDetailContainer = document.getElementById('category-detail-container');
@@ -42,25 +39,16 @@ const handleCategoryDetail = async (categoryId) => {
 
     categoryDetail.forEach((cardInfo) => {
 
-        // obtaing published date to convert in hours and miniutes
+        // obtaining published date to convert in hours and minutes
         const timeIns = cardInfo.others.posted_date;
-        console.log(timeIns)      
-    //     let minutes = Math.floor(timeMs / 60);
-    //     let hours = Math.floor(minutes / 60);
-      
-    //  // adding a leading zero if the values for the hours or minutes contain a single digit
-      
-    //   const hour = hours.toString().padStart(2, '0');
-    //   const miniute = minutes.toString().padStart(2, '0'); 
-    const hours = Math.floor(timeIns / 3600);
-   const remainingSeconds = timeIns % 3600;
-   const minutes = Math.floor(remainingSeconds / 60)
-      console.log(hours,minutes)
+        console.log(timeIns)
+
+        const hours = Math.floor(timeIns / 3600);
+        const remainingSeconds = timeIns % 3600;
+        const minutes = Math.floor(remainingSeconds / 60)
+        console.log(hours, minutes)
 
 
-     
-        
-       
         const div = document.createElement('div');
         div.innerHTML = ` 
         <div class="card  bg-base-100 shadow-xl my-10 mx-3 md:mx-6 lg:mx-0 ">
@@ -82,7 +70,7 @@ const handleCategoryDetail = async (categoryId) => {
                            
                         </div>
                         <p class="text-gray-400">${cardInfo?.others?.views + ' ' + 'views'}</p>
-                        <p class = "text-white bg-black  rounded-md absolute top-44 right-4 ">${ hours!=0?hours+'hrs ' + minutes + ' min ago':''}</p>
+                        <p class = "text-white bg-black px-1  rounded-md absolute top-44 right-4 ">${hours != 0 ? hours + 'hrs ' + minutes + ' min ago' : ''}</p>
                         
                     </div>
                 </div>
@@ -93,9 +81,6 @@ const handleCategoryDetail = async (categoryId) => {
         categoryDetailContainer.appendChild(div)
 
         console.log(cardInfo);
-            
-
-
 
     })
 
@@ -104,13 +89,13 @@ const handleCategoryDetail = async (categoryId) => {
         const emptyContent = document.getElementById('no-content');
         if (item.length == 0) {
             emptyContent.classList.remove('hidden');
-            
+
         }
-        else if(item.length > 0){
+        else if (item.length > 0) {
             emptyContent.classList.add('hidden');
         }
 
-        
+
     }
 
 
@@ -118,20 +103,9 @@ const handleCategoryDetail = async (categoryId) => {
 // to go to blog page
 function blogFunction() {
     window.location.href = "blog.html";
-    }
+}
 
-    // function to get ms in hours and minitues
-    function handleTime(ms) {
-        // Convert milliseconds to seconds
-        const seconds = Math.floor(ms / 1000);
-        
-        // Calculate the number of hours and minutes
-        const hours = Math.floor(seconds / 3600);
-        const minutes = Math.floor((seconds % 3600) / 60);
-        
-        return(hours + 'hour', minutes + 'min')
-      }
-      
+
 
 categoryTab();
 handleCategoryDetail(1000);
